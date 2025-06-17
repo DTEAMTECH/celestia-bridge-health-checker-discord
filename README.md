@@ -4,7 +4,7 @@ The Discord bot to check the health of Celestia Bridge nodes, available in the D
 
 ## About
 
-This bot provides a quick and convenient way to verify that your Celestia Bridge node is online and properly configured. It operates in the DTEAM community Discord server, where validators and users can access useful infrastructure tools.
+This service allows Celestia node operators to verify if their bridge node is online, responsive, and properly configured for RPC access. It operates in the DTEAM community Discord server, where validators and users can access useful infrastructure tools.
 
 ## Usage
 
