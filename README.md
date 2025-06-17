@@ -8,30 +8,38 @@ This service allows Celestia node operators to verify if their bridge node is on
 
 ## Usage
 
-1. Prepare your node for remote access:
+1. Open the RPC port on your node (change the UFW settings, if applicable):
    - Mainnet:
      ```bash
-     sed -i '/$begin:math:display$RPC$end:math:display$/,/^\[/ s/Address = "localhost"/Address = "0.0.0.0"/' $HOME/.celestia-bridge/config.toml
+     sudo sed -i '/\[RPC\]/,/^\[/ s/Address = "localhost"/Address = "0.0.0.0"/' $HOME/.celestia-bridge/config.toml
      sudo systemctl restart celestia-bridge
      ```
    - Testnet:
      ```bash
-     sed -i '/\[RPC\]/,/^\[/ s/Address = "localhost"/Address = "0.0.0.0"/' $HOME/.celestia-bridge-mocha-4/config.toml
+     sudo sed -i '/\[RPC\]/,/^\[/ s/Address = "localhost"/Address = "0.0.0.0"/' $HOME/.celestia-bridge-mocha-4/config.toml
      sudo systemctl restart celestia-bridge
      ```
 
-2. Retrieve your node data:
-   - IP:
+2. Gather required data:
+   - Get your IP:
      ```bash
      hostname -I
      ```
-   - Port:
+   - Get your port:
      ```bash
-     awk -F' = ' '/\[RPC\]/ {flag=1; next} flag && /Port/ {gsub(/"/, "", $2); print $2; exit}'
+     #mainnet
+     sudo awk -F' = ' '/\[RPC\]/ {flag=1; next} flag && /Port/ {gsub(/"/, "", $2); print $2; exit}' $HOME/.celestia-bridge/config.toml
+
+     #testnet
+     sudo awk -F' = ' '/\[RPC\]/ {flag=1; next} flag && /Port/ {gsub(/"/, "", $2); print $2; exit}' $HOME/.celestia-bridge-mocha-4/config.toml
      ```
-   - Token:
+   - Get your authentication token:
      ```bash
+     #mainnet
      celestia bridge auth read
+
+     #testnet
+     celestia bridge auth read --p2p.network mocha-4
      ```
 
 3. Join the [DTEAM Community Discord Server](https://discord.gg/BCeXe63Mm8).
