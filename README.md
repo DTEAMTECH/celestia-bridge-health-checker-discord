@@ -48,7 +48,7 @@ This service allows Celestia node operators to verify if their bridge node is on
 
 3. Join the [DTEAM Community Discord Server](https://discord.gg/BCeXe63Mm8).
 
-4. Navigate to the `#🤖・celestia-bridge-checker` channel and run: !checknode <ip> <port> <auth_token>
+4. Navigate to the `#🤖・celestia-bridge-checker` channel and run: /checknode <ip> <port> <auth_token>
 
 ## Examples
 
