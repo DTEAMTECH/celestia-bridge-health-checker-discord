@@ -1,6 +1,10 @@
 # Celestia Bridge Health Checker (Discord)
 
+![bridge_health_checker_discord](https://github.com/user-attachments/assets/4c4bf981-2d81-4db8-8dd0-ddf10a5b9f69)
+
 The Discord bot to check the health of Celestia Bridge nodes, available in the DTEAM community server.
+
+---
 
 ## About
 
