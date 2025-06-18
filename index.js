@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const { REST, Routes } = require("discord.js");
 const {
   Client,
@@ -10,26 +11,34 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const axios = require("axios");
 
 const TOKEN = process.env.DISCORD_TOKEN;
-const GUILD_ID = process.env.GUILD_ID;
 const CLIENT_ID = process.env.CLIENT_ID;
+const GUILD_ID = process.env.GUILD_ID;
+const CHANNEL_ID = process.env.CHANNEL_ID;
 
 const commands = [
   new SlashCommandBuilder()
     .setName("checknode")
-    .setDescription("Check Celestia Bridge Node status")
-    .addStringOption((opt) =>
-      opt.setName("ip").setDescription("IP Address").setRequired(true)
+    .setDescription("Check the health of a Celestia node")
+    .addStringOption((option) =>
+      option.setName("ip").setDescription("Node IP address").setRequired(true)
     )
-    .addIntegerOption((opt) =>
-      opt.setName("port").setDescription("Port").setRequired(true)
+    .addIntegerOption((option) =>
+      option
+        .setName("port")
+        .setDescription("Node port number")
+        .setRequired(true)
     )
-    .addStringOption((opt) =>
-      opt.setName("token").setDescription("Your auth token").setRequired(true)
+    .addStringOption((option) =>
+      option
+        .setName("token")
+        .setDescription("Your access token for the proxy")
+        .setRequired(true)
     )
     .toJSON(),
 ];
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
+
 (async () => {
   try {
     console.log("Started registering application (/) commands.");
@@ -40,7 +49,7 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
 
     console.log("Successfully registered application commands.");
   } catch (error) {
-    console.error(error);
+    console.error("Failed to register commands:", error);
   }
 })();
 
@@ -55,6 +64,13 @@ client.once("ready", () => {
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
   if (interaction.commandName !== "checknode") return;
+
+  if (interaction.channelId !== CHANNEL_ID) {
+    return interaction.reply({
+      content: "❌ This command can only be used in the designated channel.",
+      ephemeral: true,
+    });
+  }
 
   const ip = interaction.options.getString("ip", true);
   const port = interaction.options.getInteger("port", true);
@@ -75,7 +91,7 @@ client.on("interactionCreate", async (interaction) => {
     if (/error/i.test(statusMessage)) {
       color = Colors.Red;
       statusMessage =
-        "🔴 **Bad response.** Please, check your IP, port, token and try again.";
+        "🔴 **Bad response.** Please check your IP, port, token and try again.";
     } else if (/warning/i.test(statusMessage)) {
       color = Colors.Yellow;
       statusMessage = statusMessage.replace(
@@ -100,10 +116,11 @@ client.on("interactionCreate", async (interaction) => {
     await interaction.editReply({ embeds: [embed] });
   } catch (err) {
     console.error("Proxy request failed:", err);
-    const embed = new EmbedBuilder()
+
+    const errorEmbed = new EmbedBuilder()
       .setTitle("Node Status")
       .setDescription(
-        "🔴 **Bad response.** Please, check your IP, port, token and try again.\n\n" +
+        "🔴 **Bad response.** Please check your IP, port, token and try again.\n\n" +
           "[How to use it?](https://github.com/DTEAMTECH/celestia-bridge-health-checker-discord)"
       )
       .setColor(Colors.Red)
@@ -112,7 +129,7 @@ client.on("interactionCreate", async (interaction) => {
       )
       .setTimestamp();
 
-    await interaction.editReply({ embeds: [embed] });
+    await interaction.editReply({ embeds: [errorEmbed] });
   }
 });
 
