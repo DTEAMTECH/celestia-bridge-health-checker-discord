@@ -6,7 +6,6 @@ services:
     container_name: celestia-bridge-health-checker-discord
     ports:
       - "3000:3000"
-    environment:
-      - DISCORD_TOKEN=${DISCORD_TOKEN}
-      - CHANNEL_ID=${CHANNEL_ID}
+    env_file:
+      - .env
     restart: unless-stopped
