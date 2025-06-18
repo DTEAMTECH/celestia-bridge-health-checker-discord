@@ -53,10 +53,10 @@ This service allows Celestia node operators to verify if their bridge node is on
 ## Examples
 
 ### 1. Example bot command
-
+<img width="866" alt="image" src="https://github.com/user-attachments/assets/bd2fa125-4f4b-4d26-aad4-aed0a15e03d2" />
 
 ### 2. Bot response with node status
-
+<img width="869" alt="image" src="https://github.com/user-attachments/assets/de42fe3a-00fe-447e-97ca-6b55b4d502dd" />
 
 ## Links
 
