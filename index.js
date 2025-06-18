@@ -31,7 +31,7 @@ const commands = [
     .addStringOption((option) =>
       option
         .setName("token")
-        .setDescription("Your access token for the proxy")
+        .setDescription("Your Bridge Node auth token")
         .setRequired(true)
     )
     .toJSON(),
